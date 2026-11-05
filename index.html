@@ -3,34 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus-Find | Lost & Found</title>
+    <title>CampusFind | Lost and Found</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Campus-Find</h1>
-        <p>Find what you've lost. Return what you've found.</p>
+        <h1>CampusFind</h1>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#report">Report Item</a>
+            <a href="#items">Find Items</a>
+        </nav>
     </header>
 
+    <section class="hero" id="home">
+        <h2>Lost Something? Found Something?</h2>
+        <p>CampusFind helps students reconnect with their lost belongings.</p>
+        <a href="#report" class="button">Report an Item</a>
+    </section>
+
     <main>
-        <section class="welcome">
-            <h2>Welcome to Campus-Find!</h2>
-            <p>A campus lost and found platform.</p>
-            <button id="lostBtn">Report Lost Item</button>
-            <button id="foundBtn">Report Found Item</button>
+        <section class="report-section" id="report">
+            <h2>Report a Lost or Found Item</h2>
+
+            <form id="itemForm">
+                <label for="itemName">Item Name</label>
+                <input type="text" id="itemName"
+                    placeholder="Example: Black backpack" required>
+
+                <label for="itemType">Report Type</label>
+                <select id="itemType" required>
+                    <option value="">Choose one</option>
+                    <option value="Lost">I lost an item</option>
+                    <option value="Found">I found an item</option>
+                </select>
+
+                <label for="category">Category</label>
+                <select id="category" required>
+                    <option value="">Choose a category</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Books">Books</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <label for="location">Location</label>
+                <input type="text" id="location"
+                    placeholder="Where was it lost or found?" required>
+
+                <label for="description">Description</label>
+                <textarea id="description"
+                    placeholder="Describe the item..." required></textarea>
+
+                <button type="submit">Submit Report</button>
+            </form>
+
+            <p id="message" aria-live="polite"></p>
         </section>
 
-        <section>
-            <h2>Recently Reported Items</h2>
-            <div id="items">
-                <p>No items reported yet.</p>
-            </div>
+        <section class="items-section" id="items">
+            <h2>Reported Items</h2>
+
+            <input type="search" id="searchInput"
+                placeholder="Search by item name, category or location...">
+
+            <div id="itemsList" class="items-grid"></div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Campus-Find. All rights reserved.</p>
+        <p>CampusFind &copy; 2026 | Helping students find what matters.</p>
     </footer>
 
     <script src="script.js"></script>
