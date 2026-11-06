@@ -3,21 +3,25 @@ const itemsList = document.getElementById("itemsList");
 const searchInput = document.getElementById("searchInput");
 const message = document.getElementById("message");
 
-// Load previously saved reports
 let items = JSON.parse(localStorage.getItem("campusItems")) || [];
 
-// Save reports in browser storage
+// Add default values to reports created before Day 3
+items = items.map(item => ({
+    ...item,
+    email: item.email || "",
+    resolved: item.resolved || false
+}));
+
 function saveItems() {
     localStorage.setItem("campusItems", JSON.stringify(items));
 }
 
-// Display reports on the website
 function displayItems(searchTerm = "") {
     itemsList.innerHTML = "";
 
     const filteredItems = items.filter(item => {
         const searchableText =
-            ${item.name} ${item.type} ${item.category} ${item.location} ${item.description};
+            ${item.name} ${item.type} ${item.category} ${item.location} ${item.description} ${item.email};
 
         return searchableText.toLowerCase().includes(searchTerm.toLowerCase());
     });
@@ -50,15 +54,14 @@ function displayItems(searchTerm = "") {
         const date = document.createElement("p");
         date.textContent = "Reported: " + item.date;
 
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete Report";
-        deleteButton.className = "delete-button";
+        const status = document.createElement("p");
+        status.className = item.resolved
+            ? "status resolved"
+            : "status";
 
-        deleteButton.addEventListener("click", () => {
-            items = items.filter(savedItem => savedItem.id !== item.id);
-            saveItems();
-            displayItems(searchInput.value);
-        });
+        status.textContent = item.resolved
+            ? "Resolved"
+            : "Still Active";
 
         card.append(
             heading,
@@ -67,25 +70,75 @@ function displayItems(searchTerm = "") {
             location,
             description,
             date,
-            deleteButton
+            status
         );
 
+        // Contact the person who reported the item
+        if (item.email) {
+            const contactButton = document.createElement("button");
+            contactButton.textContent = "Contact Reporter";
+            contactButton.className = "contact-button";
+
+            contactButton.addEventListener("click", () => {
+                window.location.href =
+                    "mailto:" + encodeURIComponent(item.email);
+            });
+
+            card.appendChild(contactButton);
+        }
+
+        // Mark an item as resolved or active again
+        const resolveButton = document.createElement("button");
+
+        resolveButton.textContent = item.resolved
+            ? "Mark as Active"
+            : "Mark as Resolved";
+
+        resolveButton.className = "resolve-button";
+
+        resolveButton.addEventListener("click", () => {
+            items = items.map(savedItem =>
+                savedItem.id === item.id
+                    ? { ...savedItem, resolved: !savedItem.resolved }
+                    : savedItem
+            );
+
+            saveItems();
+            displayItems(searchInput.value);
+        });
+
+        // Delete a report
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete Report";
+        deleteButton.className = "delete-button";
+
+        deleteButton.addEventListener("click", () => {
+            items = items.filter(
+                savedItem => savedItem.id !== item.id
+            );
+
+            saveItems();
+            displayItems(searchInput.value);
+        });
+
+        card.append(resolveButton, deleteButton);
         itemsList.appendChild(card);
     });
 }
 
-// Handle new reports
+// Submit a new report
 itemForm.addEventListener("submit", function(event) {
     event.preventDefault();
-
-    const newItem = {
+	const newItem = {
         id: Date.now(),
         name: document.getElementById("itemName").value.trim(),
         type: document.getElementById("itemType").value,
         category: document.getElementById("category").value,
         location: document.getElementById("location").value.trim(),
         description: document.getElementById("description").value.trim(),
-        date: new Date().toLocaleDateString()
+        email: document.getElementById("email").value.trim(),
+        date: new Date().toLocaleDateString(),
+        resolved: false
     };
 
     if (
@@ -93,17 +146,21 @@ itemForm.addEventListener("submit", function(event) {
         !newItem.type ||
         !newItem.category ||
         !newItem.location ||
-        !newItem.description
+        !newItem.description ||
+        !newItem.email
     ) {
         message.textContent = "Please complete all fields.";
         return;
     }
 
     items.unshift(newItem);
+
     saveItems();
 
     itemForm.reset();
-    message.textContent = "Your report was submitted successfully!";
+
+    message.textContent =
+        "Your report was submitted successfully!";
 
     displayItems();
 });
@@ -114,4 +171,5 @@ searchInput.addEventListener("input", function() {
 });
 
 // Display saved reports when the page opens
+saveItems();
 displayItems();
