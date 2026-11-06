@@ -28,6 +28,7 @@
             <h2>Report a Lost or Found Item</h2>
 
             <form id="itemForm">
+
                 <label for="itemName">Item Name</label>
                 <input type="text" id="itemName"
                     placeholder="Example: Black backpack" required>
@@ -57,6 +58,10 @@
                 <textarea id="description"
                     placeholder="Describe the item..." required></textarea>
 
+                <label for="email">Your Email Address</label>
+                <input type="email" id="email"
+                    placeholder="example@email.com" required>
+
                 <button type="submit">Submit Report</button>
             </form>
 
@@ -67,7 +72,7 @@
             <h2>Reported Items</h2>
 
             <input type="search" id="searchInput"
-                placeholder="Search by item name, category or location...">
+                placeholder="Search by name, category or location...">
 
             <div id="itemsList" class="items-grid"></div>
         </section>
