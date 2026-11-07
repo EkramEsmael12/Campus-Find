@@ -1,87 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusFind | Lost and Found</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#087e79">
+  <title>CampusFind | Lost and Found</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="site-header">
+    <a class="brand" href="#home"><span class="brand-mark">C</span> CampusFind</a>
+    <nav aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#report">Report item</a>
+      <a href="#items">Find items</a>
+    </nav>
+    <div class="account-area">
+      <span id="accountStatus">Browsing as guest</span>
+      <button id="authButton" class="button button-light" type="button">Sign in</button>
+    </div>
+  </header>
 
-    <header>
-        <h1>CampusFind</h1>
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#report">Report Item</a>
-            <a href="#items">Find Items</a>
-        </nav>
-    </header>
-
-    <section class="hero" id="home">
-        <h2>Lost Something? Found Something?</h2>
-        <p>CampusFind helps students reconnect with their lost belongings.</p>
-        <a href="#report" class="button">Report an Item</a>
+  <main id="home">
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">YOUR CAMPUS, CONNECTED</span>
+        <h1>Lost something?<br><span>Let’s bring it home.</span></h1>
+        <p>A friendly place for students to report lost belongings and help found items get back to their owners.</p>
+        <a class="button button-coral" href="#report">Post a report <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="sun"></div>
+        <div class="bag"><span></span></div>
+        <div class="sparkle sparkle-one">✦</div>
+        <div class="sparkle sparkle-two">✦</div>
+        <div class="art-caption">A little help goes a long way</div>
+      </div>
     </section>
 
-    <main>
-        <section class="report-section" id="report">
-            <h2>Report a Lost or Found Item</h2>
+    <section class="how-strip" aria-label="How it works">
+      <div><b>01</b><span>Post what’s lost or found</span></div>
+      <div><b>02</b><span>Search campus reports</span></div>
+      <div><b>03</b><span>Reconnect with the owner</span></div>
+    </section>
 
-            <form id="itemForm">
+    <div class="content-grid">
+      <section class="panel report-panel" id="report">
+        <div class="section-heading">
+          <span class="eyebrow">HELP YOUR COMMUNITY</span>
+          <h2>Make a report</h2>
+          <p>Share a few details so the right person can find it.</p>
+        </div>
+        <p id="reportSignInHint" class="signin-hint">Sign in with your name and email to post and manage your reports.</p>
 
-                <label for="itemName">Item Name</label>
-                <input type="text" id="itemName"
-                    placeholder="Example: Black backpack" required>
+        <form id="itemForm">
+          <label for="itemName">Item name</label>
+          <input id="itemName" placeholder="e.g. Navy water bottle" maxlength="80" required>
 
-                <label for="itemType">Report Type</label>
-                <select id="itemType" required>
-                    <option value="">Choose one</option>
-                    <option value="Lost">I lost an item</option>
-                    <option value="Found">I found an item</option>
-                </select>
+          <div class="form-row">
+            <div>
+              <label for="itemType">I...</label>
+              <select id="itemType" required>
+                <option value="">Choose one</option>
+                <option value="Lost">Lost an item</option>
+                <option value="Found">Found an item</option>
+              </select>
+            </div>
+            <div>
+              <label for="category">Category</label>
+              <select id="category" required>
+                <option value="">Choose one</option>
+                <option>Electronics</option>
+                <option>Books</option>
+                <option>Clothing</option>
+                <option>Accessories</option>
+                <option>Keys</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
 
-                <label for="category">Category</label>
-                <select id="category" required>
-                    <option value="">Choose a category</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Books">Books</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Accessories">Accessories</option>
-                    <option value="Other">Other</option>
-                </select>
+          <label for="location">Where?</label>
+          <input id="location" placeholder="Building, room, or campus area" maxlength="120" required>
 
-                <label for="location">Location</label>
-                <input type="text" id="location"
-                    placeholder="Where was it lost or found?" required>
+          <label for="description">A few details</label>
+          <textarea id="description" placeholder="Color, brand, or other identifying details" maxlength="500" required></textarea>
 
-                <label for="description">Description</label>
-                <textarea id="description"
-                    placeholder="Describe the item..." required></textarea>
+          <button class="button button-teal submit-button" type="submit">Post report</button>
+          <p id="message" class="form-message" aria-live="polite"></p>
+        </form>
+      </section>
 
-                <label for="email">Your Email Address</label>
-                <input type="email" id="email"
-                    placeholder="example@email.com" required>
+      <section class="panel items-panel" id="items">
+        <div class="section-heading">
+          <span class="eyebrow">THE CAMPUS BOARD</span>
+          <h2>Recent reports <span id="itemCount" class="count">0</span></h2>
+          <p>Search recent lost and found items.</p>
+        </div>
 
-                <button type="submit">Submit Report</button>
-            </form>
+        <label class="search-wrap" for="searchInput">
+          <span aria-hidden="true">⌕</span>
+          <input type="search" id="searchInput" placeholder="Search item, category, or place...">
+        </label>
 
-            <p id="message" aria-live="polite"></p>
-        </section>
+        <div class="filter-row" role="group" aria-label="Filter reports">
+          <button type="button" class="filter-chip active" data-filter="All">All reports</button>
+          <button type="button" class="filter-chip" data-filter="Lost">Lost</button>
+          <button type="button" class="filter-chip" data-filter="Found">Found</button>
+        </div>
+        <div id="itemsList" class="items-list" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
 
-        <section class="items-section" id="items">
-            <h2>Reported Items</h2>
+  <footer>
+    <a class="brand footer-brand" href="#home"><span class="brand-mark">C</span> CampusFind</a>
+    <span>Made for a more helpful campus.</span>
+    <span>© 2026 CampusFind</span>
+  </footer>
 
-            <input type="search" id="searchInput"
-                placeholder="Search by name, category or location...">
+  <dialog id="authDialog" class="auth-dialog" aria-labelledby="authTitle">
+    <form id="authForm">
+      <button class="dialog-close" type="button" id="closeDialog" aria-label="Close">×</button>
+      <span class="eyebrow">WELCOME TO CAMPUSFIND</span>
+      <h2 id="authTitle">Sign in for this visit</h2>
+      <p>This demo saves your name on this device. No password or real account is used.</p>
+      <label for="userName">Your name</label>
+      <input id="userName" placeholder="e.g. Sam" maxlength="50" required>
+      <label for="userEmail">Your email</label>
+      <input id="userEmail" type="email" placeholder="sam@example.edu" maxlength="120" required>
+      <button class="button button-teal submit-button" type="submit">Continue</button>
+    </form>
+  </dialog>
 
-            <div id="itemsList" class="items-grid"></div>
-        </section>
-    </main>
-
-    <footer>
-        <p>CampusFind &copy; 2026 | Helping students find what matters.</p>
-    </footer>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
